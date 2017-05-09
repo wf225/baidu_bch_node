@@ -1,14 +1,28 @@
-// Load the http module to create an http server.
-var http = require('http');
+const express = require('express')
+const bodyParser = require('body-parser')
+// const cors = require('cors')
+const compression = require('compression')
+const http = require('http');
+const path = require('path');
 
-// Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, { "Content-Type": "text/plain" });
-  response.end("Hello World, Hi Bill!\n");
+const app = express();
+app.use(compression())
+// app.use(cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+const hostname = '127.0.0.1';
+const port = 8081;
+
+app.set('port', port);
+// set the static files location ./public/index.html
+console.log(path.join(__dirname, '../public'));
+app.use(express.static(path.join(__dirname, '../public')));
+
+// routes =====================================================================
+require('./routes.js')(app);
+
+// listen (start app with 'node server.js') ===================================
+app.listen(port, () => {
+  console.log("Server listening on port %s", port);
 });
-
-// Listen on port 8000, IP defaults to 127.0.0.1
-server.listen(8081);
-
-// Put a friendly message on the terminal
-console.log("Server running at http://127.0.0.1:8081/");

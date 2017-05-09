@@ -1,5 +1,5 @@
 {
-  "name": "baidu_bch_nodejs",
+  "name": "baidu_bch_node",
   "version": "0.1.0",
   "description": "Run node app on Baidu BCH env.",
   "main": "src/app.js",
