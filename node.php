@@ -98,6 +98,12 @@ function node_stop() {
 	file_put_contents("nodepid", '', LOCK_EX);
 }
 
+function node_restart() {
+	echo "Restart node app...\n";
+	node_stop();
+	node_start("server/app.js");
+}
+
 function node_npm($cmd) {
 	if(!file_exists(NODE_DIR)) {
 		echo "Node.js is not yet installed. <a href='?install'>Install it</a>.\n";
@@ -161,26 +167,6 @@ function node_foot() {
 	echo '</pre><p><a href="https://github.com/niutech/node.php" target="_blank">Powered by node.php</a></p></body></html>';
 }
 
-//
-function forever_start($file) {
-	if(!file_exists(NODE_DIR)) {
-		echo "Node.js is not yet installed. <a href='?install'>Install it</a>.\n";
-		return;
-	}
-	$node_pid = intval(file_get_contents("nodepid"));
-	if($node_pid > 0) {
-		echo "Node.js is already running. <a href='?stop'>Stop it</a>.\n";
-		return;
-	}
-	$file = escapeshellarg($file);
-	echo "Starting: node $file\n";
-	$node_pid = exec("PORT=" . NODE_PORT . " " . NODE_DIR . "_modules/.bin/forever $file >nodeout 2>&1 & echo $!");
-	echo $node_pid > 0 ? "Done. PID=$node_pid\n" : "Failed.\n";
-	file_put_contents("nodepid", $node_pid, LOCK_EX);
-	sleep(1); //Wait for node to spin up
-	echo file_get_contents("nodeout");
-}
-
 function tar_extract($file) {
 	if(!file_exists($file)) {
 		echo "$file is not existed.\n";
@@ -204,10 +190,10 @@ function node_dispatch() {
 			node_start($_GET['start']);
 		} elseif(isset($_GET['stop'])) {
 			node_stop();
+		} elseif(isset($_GET['restart'])) {
+			node_restart();
 		} elseif(isset($_GET['npm'])) {
 			node_npm($_GET['npm']);
-		} elseif(isset($_GET['forever'])) {
-			forever_start($_GET['forever']);
 		} elseif(isset($_GET['tar'])) {
 			tar_extract($_GET['tar']);
 		} else {

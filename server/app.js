@@ -1,13 +1,13 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-// const cors = require('cors')
+const cors = require('cors')
 const compression = require('compression')
 const http = require('http');
 const path = require('path');
 
 const app = express();
 app.use(compression())
-// app.use(cors())
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 

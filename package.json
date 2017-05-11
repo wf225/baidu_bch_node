@@ -2,9 +2,9 @@
   "name": "baidu_bch_node",
   "version": "0.1.0",
   "description": "Run node app on Baidu BCH env.",
-  "main": "src/app.js",
+  "main": "server/app.js",
   "scripts": {
-    "start": "forever start src/app.js",
+    "start": "node node_app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Bill Wu",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
+    "cors": "^2.8.3",
     "express": "^4.15.2",
     "forever": "^0.15.3",
     "isomorphic-fetch": "^2.2.1"
